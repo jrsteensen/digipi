@@ -169,22 +169,24 @@ sudo systemctl daemon-reload
 
 ## Setting a Default Boot Mode
 
-Edit `/etc/systemd/system/digipi-boot.service` and uncomment the `ExecStart`
-line for your preferred default mode:
+Edit `/etc/systemd/system/digipi-boot.service`.  `online.sh` always runs and
+is the only unconditional `ExecStart`.  To also launch a mode at boot, add an
+`ExecStartPost` line for it (only one mode at a time):
 
 ```ini
 [Service]
 ExecStartPre=sleep 10
-ExecStart=/home/pi/online.sh        # always runs — shows IP on display
-#ExecStart=systemctl start tnc      # uncomment ONE of these
-#ExecStart=systemctl start digipeater
-#ExecStart=systemctl start tracker
-#ExecStart=systemctl start node
-#ExecStart=systemctl start winlinkrms
-#ExecStart=systemctl start wsjtx
-#ExecStart=systemctl start js8call
-#ExecStart=systemctl start fldigi
-#ExecStart=systemctl start sstv
+ExecStart=/home/pi/online.sh
+# Uncomment exactly ONE of the following to auto-start a mode at boot:
+#ExecStartPost=systemctl start tnc
+#ExecStartPost=systemctl start digipeater
+#ExecStartPost=systemctl start tracker
+#ExecStartPost=systemctl start node
+#ExecStartPost=systemctl start winlinkrms
+#ExecStartPost=systemctl start wsjtx
+#ExecStartPost=systemctl start js8call
+#ExecStartPost=systemctl start fldigi
+#ExecStartPost=systemctl start sstv
 ```
 
 Then reload:

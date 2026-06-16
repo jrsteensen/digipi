@@ -85,7 +85,7 @@ Configure the GPS device in `/etc/default/gpsd` (or via `NEWGPS` in
 `localize.env`):
 
 ```bash
-DEVICES="ttyACM1"   # or ttyUSB0, etc.
+DEVICES="/dev/ttyACM1"   # or /dev/ttyUSB0, etc.
 ```
 
 ---

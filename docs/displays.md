@@ -119,7 +119,7 @@ This display uses a slightly different SPI mode and requires a direct
 |---|:---:|:---:|---|
 | MOSI | 10 | 19 | SPI data |
 | SCLK | 11 | 23 | SPI clock |
-| CS   | 8  | 24 | SPI CE0 (hardware) |
+| CS   | 8  | 24 | SPI CE0 (hardware SPI CE0) |
 | DC   | 24 | 18 | Data / Command |
 | RST  | 25 | 22 | Reset |
 | VCC  | —  | 1  | 3.3V |

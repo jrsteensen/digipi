@@ -40,20 +40,31 @@ Pin numbers are physical (board) numbers.  BCM numbers are used in software.
 
 | BCM GPIO | Physical Pin | Direction | DigiPi Function | Notes |
 |:---:|:---:|:---:|---|---|
-| **4**  | 7  | Output | SPI Chip-Select (CS/CE0) | ST7789 and ILI9341 displays |
+| **4**  | 7  | Output | SPI Chip-Select (CS/CE0) | ST7789 and ILI9341 displays only |
+| **8**  | 24 | Output | SPI Chip-Select (CE0) | ILI9486 display only (hardware SPI CE0) |
 | **10** | 19 | Output | SPI MOSI | Display data |
 | **9**  | 21 | Input  | SPI MISO | (not used by displays, reserved by SPI bus) |
 | **11** | 23 | Output | SPI SCLK | Display clock |
 | **12** | 32 | Output | **PTT** (Push-to-Talk) | Active-high; drives radio TX |
 | **16** | 36 | Output | **DCD** (Data Carrier Detect) | Drives green LED; set by Direwolf |
 | **23** | 16 | Input  | **Button 1 — TNC toggle** | Pull-up; button to GND |
-| **24** | 18 | Input  | **Button 2 — Digipeater toggle** | Pull-up; button to GND |
-| **25** | 22 | Output | Display DC (Data/Command) | ST7789, ILI9341, ILI9486 |
+| **24** | 18 | Input  | **Button 2 — Digipeater toggle** | Pull-up; button to GND; _repurposed as ILI9486 DC_ |
+| **25** | 22 | Output | Display DC (Data/Command) | ST7789 and ILI9341 only; _repurposed as ILI9486 RST_ |
+
+**Display-specific GPIO usage summary:**
+
+| GPIO | ST7789 / ILI9341 | ILI9486 |
+|:---:|---|---|
+| 4  | CS (chip-select) | — |
+| 8  | — | CS / CE0 (hardware SPI) |
+| 24 | Button 2 (Digipeater) | **DC** (Data/Command) |
+| 25 | **DC** (Data/Command) | **RST** (Reset) |
 
 > **ILI9486 note:** When using the large 3.5″ ILI9486 display, GPIO 24 is
-> repurposed as the display DC pin (and GPIO 25 as RST).  This conflicts with
-> the Digipeater button, so physical push-buttons are not available when the
-> ILI9486 display is installed.  Use the web interface instead.
+> repurposed as the display DC pin and GPIO 25 as the RST pin.  This
+> conflicts with the Digipeater button, so physical push-buttons are **not
+> available** when the ILI9486 display is installed.  Use the web interface
+> to control modes instead.
 
 ---
 
@@ -122,9 +133,11 @@ DigiPi uses the hardware SPI0 bus for the TFT display.
 | MOSI  | 10 | 19 |
 | MISO  | 9  | 21 |
 | SCLK  | 11 | 23 |
-| CE0 (CS) | 4 | 7 |
-| DC    | 25 | 22 |
-| RST (ILI9486 only) | 25 | 22 |
+| CE0 (CS) — ST7789 / ILI9341 | 4 | 7 |
+| CE0 (CS) — ILI9486 | 8 | 24 |
+| DC — ST7789 / ILI9341 | 25 | 22 |
+| DC — ILI9486 | 24 | 18 |
+| RST — ILI9486 | 25 | 22 |
 
 Enable SPI in `/boot/firmware/config.txt` (or via `raspi-config`):
 
