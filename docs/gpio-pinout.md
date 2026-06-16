@@ -41,15 +41,17 @@ Pin numbers are physical (board) numbers.  BCM numbers are used in software.
 | BCM GPIO | Physical Pin | Direction | DigiPi Function | Notes |
 |:---:|:---:|:---:|---|---|
 | **4**  | 7  | Output | SPI Chip-Select (CS/CE0) | ST7789 and ILI9341 displays only |
+| **5**  | 29 | Output | **Blue LED** (Bluetooth status) | Active-high; lights when a Bluetooth device is connected |
 | **8**  | 24 | Output | SPI Chip-Select (CE0) | ILI9486 display only (hardware SPI CE0) |
-| **10** | 19 | Output | SPI MOSI | Display data |
 | **9**  | 21 | Input  | SPI MISO | (not used by displays, reserved by SPI bus) |
+| **10** | 19 | Output | SPI MOSI | Display data |
 | **11** | 23 | Output | SPI SCLK | Display clock |
-| **12** | 32 | Output | **PTT** (Push-to-Talk) | Active-high; drives radio TX |
-| **16** | 36 | Output | **DCD** (Data Carrier Detect) | Drives green LED; set by Direwolf |
+| **12** | 32 | Output | **PTT** (Push-to-Talk) | Active-high; drives radio TX via Direwolf |
+| **16** | 36 | Output | **DCD** (Data Carrier Detect) | Active-high; drives green LED; set by Direwolf |
 | **23** | 16 | Input  | **Button 1 — TNC toggle** | Pull-up; button to GND |
 | **24** | 18 | Input  | **Button 2 — Digipeater toggle** | Pull-up; button to GND; _repurposed as ILI9486 DC_ |
 | **25** | 22 | Output | Display DC (Data/Command) | ST7789 and ILI9341 only; _repurposed as ILI9486 RST_ |
+| **26** | 37 | Output | **Red LED** (PTT indicator) | Active-high; mirrors PTT state from Direwolf log |
 
 **Display-specific GPIO usage summary:**
 
@@ -92,6 +94,28 @@ Supported PTT methods (set via `NEWRIGNUMBER`/`NEWDEVICEFILE`):
 | `RTS` | Serial port RTS line |
 | `CM108` | USB CM108 audio adapter HID |
 | Numeric Hamlib rig number | Hamlib `rigctld` |
+
+---
+
+## Red LED — PTT Indicator (GPIO 26)
+
+`direwatch.py` drives GPIO 26 high whenever Direwolf reports a PTT-on event in
+its log.  This provides a visual transmit indicator independent of the radio
+interface.
+
+Connect a red LED (with appropriate resistor, e.g. 330 Ω) between GPIO 26
+(physical pin 37) and GND.
+
+---
+
+## Blue LED — Bluetooth Status (GPIO 5)
+
+`direwatch.py` drives GPIO 5 high when a Bluetooth device is connected to the
+Pi (polled via `hcitool con`).  This lets you confirm an Android/iOS APRS app
+has successfully paired.
+
+Connect a blue LED (with appropriate resistor, e.g. 330 Ω) between GPIO 5
+(physical pin 29) and GND.
 
 ---
 
@@ -178,7 +202,9 @@ over the onboard audio when one is present.
 Raspberry Pi                        Radio
 ─────────────────────────────────────────────────
 GPIO 12 (PTT) ──[optocoupler]──────► PTT line
-GPIO 16 (DCD) ──[330Ω]──[LED]──GND  (green LED)
+GPIO 16 (DCD) ──[330Ω]──[LED]──GND  (green LED — carrier detect)
+GPIO 26 (PTT indicator) ─[330Ω]─[LED]──GND  (red LED — transmitting)
+GPIO  5 (Bluetooth) ────[330Ω]──[LED]──GND  (blue LED — BT connected)
 GPIO 23       ──[button]──GND        (TNC button)
 GPIO 24       ──[button]──GND        (Digi button)
 

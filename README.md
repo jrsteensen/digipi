@@ -32,13 +32,15 @@ This repository contains all original code and modifications to existing GPL cod
 
 | Document | Description |
 |---|---|
-| [Getting Started](docs/getting-started.md) | First-boot setup and localization |
-| [GPIO Pinout](docs/gpio-pinout.md) | Raspberry Pi GPIO header and DigiPi pin assignments |
-| [Displays](docs/displays.md) | Supported TFT displays and wiring |
+| [Getting Started](docs/getting-started.md) | First-boot setup, SD card flashing, and localization |
+| [GPIO Pinout](docs/gpio-pinout.md) | Raspberry Pi GPIO header and DigiPi pin assignments (PTT, DCD, LEDs, buttons) |
+| [Displays](docs/displays.md) | Supported TFT displays, wiring, and supplier notes |
 | [Operating Modes](docs/operating-modes.md) | All modes, scripts, and how they work |
 | [Configuration Reference](docs/configuration.md) | `localize.env` variable reference |
 | [Web Interface](docs/web-interface.md) | Web UI overview |
 | [Systemd Services](docs/services.md) | Service reference and management |
+| [Radio Settings](docs/radio-settings.md) | Community-tested radio and interface configurations |
+| [Tips and Hacks](docs/tips-and-hacks.md) | Useful tips, unsuitable hardware, browser notes, and contributing |
 
 ---
 
