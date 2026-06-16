@@ -10,11 +10,15 @@ Three display families are supported, driven entirely from userspace Python
 
 ## Supported Displays
 
-| Model | Driver | Resolution | Size | Notes |
-|---|---|:---:|---|---|
-| Adafruit Mini PiTFT 1.3" | `st7789` | 240 × 240 | 1.3" | Two built-in buttons (GPIO 23, 24) |
-| Adafruit PiTFT 2.8" | `ili9341` | 320 × 240 | 2.8" | Two built-in buttons |
-| Generic 3.5" SPI TFT | `ili9486` | 480 × 320 | 3.5" | No buttons; GPIO 24 used for DC |
+| Model | Driver | Resolution | Size | Confirmed Source | Price |
+|---|---|:---:|---|---|---|
+| Adafruit Mini PiTFT 1.3" | `st7789` | 240 × 240 | 1.3" | [Adafruit #4484](https://www.adafruit.com/product/4484), [Amazon](https://amazon.com/gp/product/B08F9XTKGK) | ~$15 |
+| Adafruit PiTFT 2.8" | `ili9341` | 320 × 240 | 2.8" | [Adafruit #2423](https://www.adafruit.com/product/2423) | ~$45 |
+| Generic 3.5" SPI TFT | `ili9486` | 480 × 320 | 3.5" | [Amazon B07V9WW96D](https://www.amazon.com/gp/product/B07V9WW96D) | ~$25 |
+
+> ⚠️ **Supplier note:** Not all suppliers are equal — displays sourced outside
+> the Americas have been reported to not work.  Stick to the confirmed links
+> above for new builds.
 
 Set `NEWDISPLAYTYPE` in `/home/pi/localize.env` to `st7789`, `ili9341`, or
 `ili9486`.  Leave it blank or set to `none` if no display is attached.

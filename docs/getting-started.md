@@ -22,10 +22,16 @@ This guide walks you through setting up DigiPi on a Raspberry Pi — from flashi
 
 1. Download the DigiPi SD card image from <https://digipi.org/>  
    *(Patreon supporters at <http://patreon.com/KM6LYW> get access.)*
-2. Flash it to a microSD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or `dd`.
+2. Flash it to a microSD card using one of:
+   - [Raspberry Pi Imager](https://www.raspberrypi.com/software/) — easy GUI, available for Windows / macOS / Linux
+   - [Balena Etcher](https://etcher-docs.balena.io/) — cross-platform alternative
+   - `dd` — command-line on Linux/macOS
 3. Insert the card, connect your Pi to your network, and power on.
 4. Open `http://digipi` (or the Pi's IP address) in a browser.
 5. Complete the **Initialization** form — see [First Boot](#first-boot) below.
+
+> **16 GB microSD cards** are the sweet spot for DigiPi — the image is small
+> and DigiPi minimizes SD card writes to extend the card's life.
 
 ---
 
@@ -133,6 +139,29 @@ See [Configuration Reference](configuration.md) for a full list of variables.
 | Bluetooth KISS | `/dev/rfcomm0` → port 8001 |
 | noVNC (GUI apps) | `http://digipi:6080` |
 | Pat (Winlink email) | `http://digipi/pat` (port 8080 internally) |
+| WSJT-X / FT8 ADI logs | `http://digipi/logs/` |
+
+> **Tip:** You can also retrieve WSJT-X `.adi` log files over the network with
+> `scp`:
+> ```bash
+> scp pi@<ip>:~/.local/share/WSJT-X/wsjtx_log.adi ~/Desktop/
+> ```
+> or use an SFTP client such as FileZilla.
+
+---
+
+## Editing Files on the Pi
+
+DigiPi runs with a **read-only filesystem** by default to protect the SD card.
+Before editing any system file, make the filesystem writable:
+
+```bash
+sudo remount
+```
+
+Rebooting returns the filesystem to read-only mode.  Always shut down cleanly
+(via the web interface shutdown button or `sudo shutdown now`) rather than
+pulling the power while the filesystem is writable, to avoid corruption.
 
 ---
 
@@ -143,4 +172,47 @@ files so they survive a reflash or SD card replacement:
 
 ```bash
 /home/pi/saveconfigs.sh
+```
+
+---
+
+## Initialization Checklist Template
+
+Copy and customize this checklist to speed up upgrades and re-installations:
+
+```
+============================
+DigiPi Initialization Screen
+============================
+
+* First boot creates a PtP WiFi network: SSID DigiPi / password abcdefghij
+* **Change the default WiFi password as soon as possible after first boot!**
+* Browse to 10.0.0.5  (digipi.local may also work, but the raw IP is reliable)
+* Go to WiFi Setup and connect to your home network before continuing
+* Be careful installing large additional packages without first expanding the
+  filesystem — see https://github.com/KD9YQK/digipi_plus/blob/main/extend_filesystem.md
+
+Callsign:         {yours}
+Winlink Password: {yours}
+APRS Password:    {yours}
+Grid Square:      {yours}
+Latitude:         {yours}
+Longitude:        {yours}
+GPS Device:       ttyACM1
+AX.25 Node Pass:  abc123
+Screen Type:      ILI9486 320x480
+Enable FLRig:     {unchecked}
+Large Display:    {checked}
+Radio Interface:  DigiRig Mobile
+
+Post-init checklist:
+* Local login is pi / raspberry — change this password after first boot
+* "sudo remount" to make the filesystem writable before editing files
+* If using the ILI9486 display and the image is upside-down, issue
+  "sudo remount" and edit digibanner.py and direwatch.py to change
+  LOWER_RIGHT to UPPER_LEFT
+* Adjust audio levels for your radio and interface via the Audio menu
+* If running more than one DigiPi simultaneously, rename each one:
+  "sudo remount", edit /etc/hostname and /etc/hosts, run a GUI app
+  once (fixes .Xauthority), then reboot
 ```
