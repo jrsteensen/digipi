@@ -92,9 +92,8 @@ Video walkthrough: <https://www.youtube.com/watch?v=MwygYBBgCcw&t=1129s>
   FLRig as the rig in other applications.
 - **Direwolf PTT override** (add to your `direwolf.*.conf`):
   ```
-  PTT RIG 1022 {your serial port}
+  PTT RIG 1022 /dev/ttyUSB0   # replace with your actual serial port, e.g. /dev/ttyACM0
   ```
-- *Minitechnicus:* The FT-857 / FT-817 also works with the DRA HAT using a
   mini-DIN 6 cable — no configuration changes needed.  The same cable and HAT
   work with Kenwood TM-V71, ICOM 208H, and Alinco 135.
 
@@ -113,7 +112,7 @@ Video walkthrough: <https://www.youtube.com/watch?v=MwygYBBgCcw&t=1129s>
   FLRig as the rig in other applications.
 - **Direwolf PTT override** (add to your `direwolf.*.conf`):
   ```
-  PTT RIG 1020 {your serial port}
+  PTT RIG 1020 /dev/ttyUSB0   # replace with your actual serial port, e.g. /dev/ttyACM0
   ```
 - *Minitechnicus:* See FT-857D note above — same cable and HAT work here too.
 
@@ -183,7 +182,7 @@ pcm.ARDOP {
 pcm.!default {
 type rate
 slave {
-       pcm "plughw:0,0"
+       pcm "plughw:0,0"   # verify card number with: arecord -l
        rate 44100
       }
 }

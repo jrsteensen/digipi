@@ -186,6 +186,7 @@ DigiPi Initialization Screen
 ============================
 
 * First boot creates a PtP WiFi network: SSID DigiPi / password abcdefghij
+* **Change the default WiFi password as soon as possible after first boot!**
 * Browse to 10.0.0.5  (digipi.local may also work, but the raw IP is reliable)
 * Go to WiFi Setup and connect to your home network before continuing
 * Be careful installing large additional packages without first expanding the
